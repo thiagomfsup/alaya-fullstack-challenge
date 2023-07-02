@@ -1,5 +1,7 @@
 package com.example.server.service;
 
+import com.example.server.exception.PermissionException;
+import com.example.server.exception.ResourceNotFoundException;
 import com.example.server.models.Post;
 import com.example.server.repository.PostRepository;
 import com.github.slugify.Slugify;
@@ -29,17 +31,28 @@ class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post publish(Post post) {
+    public Post publish(Post post, UUID userId) {
         // TODO sanitize postDTO
 
         post.setCuid(UUID.randomUUID());
         post.setSlug(Slugify.builder().build().slugify(post.getTitle()));
+        post.setCreatedBy(userId);
 
         return postRepository.save(post);
     }
 
     @Override
-    public void deleteById(UUID uuid) {
-        postRepository.deleteById(uuid);
+    public void deleteById(UUID uuid, UUID userId) {
+        final Optional<Post> optPost = postRepository.findById(uuid);
+
+        if (!optPost.isPresent())
+            throw new ResourceNotFoundException("Post Not Found");
+
+        Post post = optPost.get();
+
+        if (!userId.equals(post.getCreatedBy()))
+            throw new PermissionException("User cannot delete this Post");
+
+        postRepository.delete(post);
     }
 }

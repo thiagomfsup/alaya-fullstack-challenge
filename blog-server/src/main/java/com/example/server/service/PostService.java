@@ -1,7 +1,7 @@
 package com.example.server.service;
 
 import com.example.server.models.Post;
-import org.springframework.http.ProblemDetail;
+import com.example.server.models.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,7 +12,7 @@ public interface PostService {
 
     Optional<Post> findById(UUID uuid);
 
-    Post publish(Post post);
+    Post publish(Post post, UUID user);
 
-    void deleteById(UUID uuid);
+    void deleteById(UUID uuid, UUID user);
 }
