@@ -37,9 +37,9 @@ function Navbar() {
     return (
         <ThemeProvider theme={theme}>
             <AppBar position="fixed">
-                <NotificationContainer />
-                <Toolbar>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                <NotificationContainer/>
+                <Toolbar style={{display: "flex", justifyContent: "space-between", width: "100%"}}>
+                    <Typography variant="h6" component="div">
                         <Link href="/" className="text-white">Home</Link>
                     </Typography>
                     {!user && (
@@ -64,8 +64,8 @@ function Navbar() {
                                 id="menu-appbar"
                                 anchorEl={anchorEl}
                                 anchorOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
+                                    vertical: 'bottom',
+                                    horizontal: 'left',
                                 }}
                                 keepMounted
                                 transformOrigin={{
@@ -83,7 +83,6 @@ function Navbar() {
             </AppBar>
         </ThemeProvider>
     );
-
 };
 
 export default Navbar;
